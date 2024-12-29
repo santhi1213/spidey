@@ -6,7 +6,6 @@ const Home = ({ isSidebarOpen }) => {
   const [selectedClient, setSelectedClient] = useState("#");
   const [clientData, setClientData] = useState([]);
 
-  // Mock API response data
   const apiResponse = {
     shop1: [
       { slno: 1, clientName: "Shop1", items: 5, totalQuantity: 100, price: 500 },
@@ -22,13 +21,11 @@ const Home = ({ isSidebarOpen }) => {
     ],
   };
 
-  // Handle selection change
   const handleClientChange = (event) => {
     const selected = event.target.value;
     setSelectedClient(selected);
   };
 
-  // Fetch data based on selected client
   useEffect(() => {
     if (selectedClient !== "#") {
       setClientData(apiResponse[selectedClient] || []);
