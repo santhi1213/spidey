@@ -7,11 +7,33 @@ const Register = ({ setIsLogin }) => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Assume successful registration
-    setIsLogin(true);
+    try{
+      const response = await fetch("http://localhost:5001/register",{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({ 
+          name: name,
+          username: username,
+          password: password,
+        }),  
+      })
+      if (!response.ok) {
+        const errorText = await response.text(); // Get the error message as text
+        console.error("Error response:", errorText);
+        return;
+      }
+  
+      const data = await response.json();
+      console.log(data)
+      setIsLogin(true);
     navigate("/dashboard");
+    }catch(err){
+      console.log(err.message)
+    }
   };
 
   return (

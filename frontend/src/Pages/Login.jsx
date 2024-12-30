@@ -6,12 +6,43 @@ const Login = ({ setIsLogin }) => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Assume successful login
-    setIsLogin(true);
-    navigate("/dashboard");
+  
+    // Check if fields are empty
+    if (!username || !password) {
+      console.log("Username and password are required.");
+      alert("Please enter both username and password.");
+      return; // Don't submit the form if fields are empty
+    }
+  
+    try {
+      const response = await fetch("http://localhost:5001/login", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      });
+  
+      if (!response.ok) {
+        console.log('Invalid username or password');
+        alert('Invalid username or password');
+        return;
+      }
+  
+      const data = await response.json();
+      console.log(data);
+      setIsLogin(true);
+      navigate("/dashboard");
+    } catch (err) {
+      console.log(err.message);
+    }
   };
+ 
 
   return (
     <div className="flex justify-center mt-[10%]">

@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { FaEye } from "react-icons/fa";
-
+import DashboardModal from "../../components/Modals/DashboardModal";
 
 const Home = ({ isSidebarOpen }) => {
   const [selectedClient, setSelectedClient] = useState("#");
   const [clientData, setClientData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null); 
+
+  const handleModalOpen = (item) => {
+    setSelectedItem(item); 
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedItem(null); 
+  };
 
   const apiResponse = {
     shop1: [
@@ -79,7 +91,9 @@ const Home = ({ isSidebarOpen }) => {
                     <td className="border p-2">{item.totalQuantity}</td>
                     <td className="border p-2">{item.price}</td>
                     <td className="border p-2 text-center">
-                      <button className="text-black p-2 rounded"><FaEye/></button>
+                      <button className="text-black p-2 rounded" onClick={() => handleModalOpen(item)}>
+                        <FaEye />
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -93,6 +107,8 @@ const Home = ({ isSidebarOpen }) => {
             </tbody>
           </table>
         </div>
+
+        <DashboardModal isOpen={isModalOpen} onClose={handleModalClose} item={selectedItem} />
       </div>
     </div>
   );
