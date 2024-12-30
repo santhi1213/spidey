@@ -20,6 +20,16 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", UserSchema);
 
+const HandoverItems = new mongoose.Schema({
+    clientName:{type:String, required:true},
+    idlyBatter:{type:String, required:true},
+    dosaBatter:{type:String, required:true},
+    bobbaraBatter:{type:String, required:true},
+    pesaraBatter:{type:String, required:true}
+})
+
+const handoverItems = mongoose.model("handoverItems", HandoverItems)
+
 app.post("/register", async(req, res)=>{
     const { name, username, password } = req.body;
 
@@ -57,6 +67,19 @@ app.post("/login", async(req, res)=>{
         res.status(500).json({message:'internal server error'})
     }
 })
+
+app.post("/producthandover", async (req, res) => {
+    const { clientName, idlyBatter, dosaBatter, pesaraBatter, bobbaraBatter } = req.body;
+
+    try {
+        const newHandoverItems = new handoverItems({ clientName, idlyBatter, dosaBatter, pesaraBatter, bobbaraBatter });
+        await newHandoverItems.save();
+        res.status(200).json({ message: 'Items added successfully' });
+    } catch (err) {
+        console.error("Error saving handover items:", err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 
 

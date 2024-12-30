@@ -84,7 +84,7 @@ const Home = ({ isSidebarOpen }) => {
             <tbody>
               {clientData.length > 0 ? (
                 clientData.map((item) => (
-                  <tr key={item.slno}>
+                  <tr key={item.slno} className="text-center">
                     <td className="border p-2">{item.slno}</td>
                     <td className="border p-2">{item.clientName}</td>
                     <td className="border p-2">{item.items}</td>

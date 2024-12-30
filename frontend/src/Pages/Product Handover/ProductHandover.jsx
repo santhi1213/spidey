@@ -10,10 +10,65 @@ const categories = [
 const ProductHandover = ({ isSidebarOpen }) => {
     const [selectedClient, setSelectedClient] = useState('');
     const [displayCategories, setDisplayCategories] = useState(false);
+    const [formData, setFormData] = useState({
+        clientName: selectedClient,
+        idlyBatter: '',
+        dosaBatter: '',
+        pesaraBatter: '',
+        bobbaraBatter: ''
+    })
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }))
+    }
+
+    const uploadItems = async (e) => {
+        e.preventDefault();
+        if (!formData.clientName || formData.clientName === "#") {
+            console.log('Please select a client');
+            return;
+        }
+        try {
+            const response = await fetch("http://localhost:5001/producthandover", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+            if (!response.ok) {
+                console.log('Server error:', response.status);
+                return;
+            }
+            const data = await response.json();
+            console.log('Response:', data);
+            alert(data.message);
+            setFormData({
+                clientName: '',
+                idlyBatter: '',
+                dosaBatter: '',
+                pesaraBatter: '',
+                bobbaraBatter: ''
+            });
+            setSelectedClient('#'); 
+        } catch (err) {
+            console.log('Error:', err.message);
+        }
+    };
+    
+
 
     const handleClientChange = (event) => {
-        setSelectedClient(event.target.value);
+        const value = event.target.value;
+        setSelectedClient(value);
+        setFormData((prevData) => ({
+            ...prevData,
+            clientName: value,
+        }));
     };
+
 
     useEffect(() => {
         setDisplayCategories(selectedClient && selectedClient !== "#");
@@ -22,7 +77,7 @@ const ProductHandover = ({ isSidebarOpen }) => {
     return (
         <div className={`${isSidebarOpen ? "ml-16 w-[96%]" : "ml-64 w-[83%]"} transition-all`}>
             <div className="mt-12">
-                <form onSubmit={(e) => e.preventDefault()} className="shadow-lg p-4 w-[50%] justify-self-center border border-gray-300 rounded-md">
+                <form onSubmit={uploadItems} className="shadow-lg p-4 w-[50%] justify-self-center border border-gray-300 rounded-md">
                     <div className="text-center">
                         <h1 className="text-lg font-bold text-green-700">Product Handover</h1>
                     </div>
@@ -50,10 +105,13 @@ const ProductHandover = ({ isSidebarOpen }) => {
                                         </label>
                                         <input
                                             type="number"
+                                            name={category.id + "Batter"}
                                             className="flex-1 border border-gray-400 rounded-md p-2 w-[70%]"
                                             id={category.id}
+                                            onChange={handleChange}
                                             placeholder="Enter quantity"
                                         />
+
                                     </div>
                                 ))}
                             </div>
