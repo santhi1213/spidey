@@ -1,37 +1,62 @@
 import React, { useState, useEffect } from "react";
 
 const categories = [
-    { id: "idly", label: "Idly Batter" },
-    { id: "dosa", label: "Dosa Batter" },
-    { id: "pesara", label: "Pesara Batter" },
-    { id: "bobbara", label: "Bobbara Batter" },
+    { id: "idlyBatter", label: "Idly Batter", type: "number" },
+    { id: "dosaBatter", label: "Dosa Batter", type: "number" },
+    { id: "pesaraBatter", label: "Pesara Batter", type: "number" },
+    { id: "bobbaraBatter", label: "Bobbara Batter", type: "number" },
+    { id: "date", label: "Date", type: "date" },
 ];
 
 const ProductHandover = ({ isSidebarOpen }) => {
     const [selectedClient, setSelectedClient] = useState('');
     const [displayCategories, setDisplayCategories] = useState(false);
+    const currentDate = new Date().toISOString().slice(0, 10);
+    const [apiData, setApiData]= useState([])
     const [formData, setFormData] = useState({
-        clientName: selectedClient,
+        clientName: '',
         idlyBatter: '',
         dosaBatter: '',
         pesaraBatter: '',
-        bobbaraBatter: ''
-    })
+        bobbaraBatter: '',
+        date: currentDate,
+    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
-            [name]: value
-        }))
+            [name]: value,
+        }));
+    };
+
+    const AllUsers = async()=>{
+        try{
+            const response = await fetch('http://localhost:5001/users');
+            if(!response){
+                console.log(err.message)
+            }
+            const data = await response.json();
+            setApiData(data.reverse());
+            console.log(data);
+        }catch(err){
+            console.log(err.message);
+            alert(err.message)
+        }
     }
+
+    useEffect(()=>{
+        AllUsers();
+    },[])
 
     const uploadItems = async (e) => {
         e.preventDefault();
         if (!formData.clientName || formData.clientName === "#") {
-            console.log('Please select a client');
+            alert('Please select a client');
             return;
         }
+        setIsSubmitting(true);
         try {
             const response = await fetch("http://localhost:5001/producthandover", {
                 method: 'POST',
@@ -39,26 +64,26 @@ const ProductHandover = ({ isSidebarOpen }) => {
                 body: JSON.stringify(formData),
             });
             if (!response.ok) {
-                console.log('Server error:', response.status);
+                console.error('Server error:', response.status);
                 return;
             }
             const data = await response.json();
-            console.log('Response:', data);
             alert(data.message);
             setFormData({
                 clientName: '',
                 idlyBatter: '',
                 dosaBatter: '',
                 pesaraBatter: '',
-                bobbaraBatter: ''
+                bobbaraBatter: '',
+                date: currentDate,
             });
-            setSelectedClient('#'); 
+            setSelectedClient('');
         } catch (err) {
-            console.log('Error:', err.message);
+            console.error('Error:', err.message);
+        } finally {
+            setIsSubmitting(false);
         }
     };
-    
-
 
     const handleClientChange = (event) => {
         const value = event.target.value;
@@ -69,7 +94,6 @@ const ProductHandover = ({ isSidebarOpen }) => {
         }));
     };
 
-
     useEffect(() => {
         setDisplayCategories(selectedClient && selectedClient !== "#");
     }, [selectedClient]);
@@ -77,22 +101,30 @@ const ProductHandover = ({ isSidebarOpen }) => {
     return (
         <div className={`${isSidebarOpen ? "ml-16 w-[96%]" : "ml-64 w-[83%]"} transition-all`}>
             <div className="mt-12">
-                <form onSubmit={uploadItems} className="shadow-lg p-4 w-[50%] justify-self-center border border-gray-300 rounded-md">
+                <form
+                    onSubmit={uploadItems}
+                    className="shadow-lg p-4 w-[50%] justify-self-center border border-gray-300 rounded-md"
+                >
                     <div className="text-center">
                         <h1 className="text-lg font-bold text-green-700">Product Handover</h1>
                     </div>
                     <div className="mt-6 w-[70%] mx-auto">
-                        <label htmlFor="client" className="block font-medium mb-2">Select Client</label>
+                        <label htmlFor="client" className="block font-medium mb-2">
+                            Select Client
+                        </label>
                         <select
-                            name="client"
+                            name="clientName"
                             id="client"
+                            value={formData.clientName}
                             onChange={handleClientChange}
                             className="border border-gray-400 p-2 rounded w-full"
                         >
                             <option value="#">--Select--</option>
-                            <option value="shop1">Shop1</option>
-                            <option value="shop2">Shop2</option>
-                            <option value="shop3">Shop3</option>
+                            {apiData.map((item, index)=>(
+                               
+                                <option value={item.userName}>{item.userName}</option>
+                              
+                            ))}
                         </select>
                     </div>
                     {displayCategories && (
@@ -100,27 +132,39 @@ const ProductHandover = ({ isSidebarOpen }) => {
                             <div className="mt-6 border grid grid-cols-2 gap-x-4 gap-y-6 p-4 shadow-lg">
                                 {categories.map((category) => (
                                     <div key={category.id} className="flex items-center">
-                                        <label htmlFor={category.id} className="flex-1 text-gray-700 font-medium">
+                                        <label
+                                            htmlFor={category.id}
+                                            className="flex-1 text-gray-700 font-medium"
+                                        >
                                             {category.label}:
                                         </label>
                                         <input
-                                            type="number"
-                                            name={category.id + "Batter"}
+                                            type={category.type}
+                                            name={category.id}
                                             className="flex-1 border border-gray-400 rounded-md p-2 w-[70%]"
                                             id={category.id}
                                             onChange={handleChange}
-                                            placeholder="Enter quantity"
+                                            placeholder={
+                                                category.type === "number"
+                                                    ? "Enter quantity"
+                                                    : "Select date"
+                                            }
+                                            value={formData[category.id]}
                                         />
-
                                     </div>
                                 ))}
                             </div>
                             <div className="text-center">
                                 <button
                                     type="submit"
-                                    className="mt-6 bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded"
+                                    disabled={isSubmitting}
+                                    className={`mt-6 ${
+                                        isSubmitting
+                                            ? "bg-gray-400"
+                                            : "bg-green-700 hover:bg-green-800"
+                                    } text-white px-4 py-2 rounded`}
                                 >
-                                    Submit
+                                    {isSubmitting ? "Submitting..." : "Submit"}
                                 </button>
                             </div>
                         </>

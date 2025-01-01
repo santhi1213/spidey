@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = ({ setIsLogin }) => {
@@ -6,43 +6,50 @@ const Login = ({ setIsLogin }) => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    // Check if fields are empty
-    if (!username || !password) {
-      console.log("Username and password are required.");
-      alert("Please enter both username and password.");
-      return; // Don't submit the form if fields are empty
+  const API_URL = 'http://localhost:5001'; // Replace with your API base URL
+
+  useEffect(() => {
+    // Check if the authToken exists in localStorage on component mount
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      setIsLogin(true);  // Set login state to true if token exists
+      navigate("/dashboard");  // Redirect to dashboard if already logged in
     }
-  
+  }, [navigate, setIsLogin]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    
+    if (!username || !password) {
+      alert("Please enter both username and password.");
+      return;
+    }
+
     try {
-      const response = await fetch("http://localhost:5001/login", {
+      const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
+        body: JSON.stringify({ username, password }),
       });
-  
-      if (!response.ok) {
-        console.log('Invalid username or password');
-        alert('Invalid username or password');
-        return;
-      }
-  
+
       const data = await response.json();
-      console.log(data);
-      setIsLogin(true);
-      navigate("/dashboard");
-    } catch (err) {
-      console.log(err.message);
+
+      if (response.ok) {
+        localStorage.setItem('authToken', data.token); 
+        console.log('Login successful');
+        setIsLogin(true);
+        navigate("/dashboard");
+      } else {
+        console.error(data.message); 
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Error logging in:', error.message);
+      alert('An error occurred while logging in. Please try again later.');
     }
   };
- 
 
   return (
     <div className="flex justify-center mt-[10%]">

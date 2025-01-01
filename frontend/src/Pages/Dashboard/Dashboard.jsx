@@ -7,6 +7,7 @@ const Home = ({ isSidebarOpen }) => {
   const [clientData, setClientData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null); 
+   const [apiData, setApiData]= useState([]);
 
   const handleModalOpen = (item) => {
     setSelectedItem(item); 
@@ -17,6 +18,26 @@ const Home = ({ isSidebarOpen }) => {
     setIsModalOpen(false);
     setSelectedItem(null); 
   };
+
+    const AllUsers = async()=>{
+          try{
+              const response = await fetch('http://localhost:5001/users');
+              if(!response){
+                  console.log(err.message)
+              }
+              const data = await response.json();
+              setApiData(data.reverse());
+              console.log(data);
+          }catch(err){
+              console.log(err.message);
+              alert(err.message)
+          }
+      }
+  
+      useEffect(()=>{
+          AllUsers();
+      },[])
+  
 
   const apiResponse = {
     shop1: [
@@ -115,3 +136,23 @@ const Home = ({ isSidebarOpen }) => {
 };
 
 export default Home;
+
+
+// import React, { useEffect, useState } from "react";
+
+// const Home = ({ isSidebarOpen }) => {
+
+//     return (
+//         <div
+//             className={`${
+//                 isSidebarOpen ? "ml-16 w-[96%]" : "ml-64 w-[83%]"
+//             } transition-all`}
+//         >
+//             <div>
+//                <h1>hoem</h1>
+//             </div>
+//         </div>
+//     );
+// };
+
+// export default Home;

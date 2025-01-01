@@ -32,7 +32,7 @@ const Sidebar = ({ collapsed, toggleSidebar }) => {
           <div className="flex flex-col p-4 gap-4">
             <Link
               to="/dashboard"
-              className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/home')}`}
+              className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/dashboard')}`}
               onClick={() => setActive('/dashboard')} 
             >
               <FaHome className="text-xl" />
@@ -41,7 +41,7 @@ const Sidebar = ({ collapsed, toggleSidebar }) => {
 
             <Link
               to="/product-handover"
-              className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/home')}`}
+              className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/product-handover')}`}
               onClick={() => setActive('/product-handover')} 
             >
               <FaHome className="text-xl" />
@@ -50,7 +50,7 @@ const Sidebar = ({ collapsed, toggleSidebar }) => {
             
             <Link
               to="/product-return"
-              className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/home')}`}
+              className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/product-return')}`}
               onClick={() => setActive('/product-return')} 
             >
               <FaHome className="text-xl" />
@@ -59,11 +59,20 @@ const Sidebar = ({ collapsed, toggleSidebar }) => {
 
             <Link
               to="/add-client"
-              className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/home')}`}
+              className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/add-client')}`}
               onClick={() => setActive('/add-client')} 
             >
               <FaHome className="text-xl" />
               {!collapsed && <span>Add Client</span>}
+            </Link>
+
+            <Link
+              to="/left-items"
+              className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/left-items')}`}
+              onClick={() => setActive('/left-items')} 
+            >
+              <FaHome className="text-xl" />
+              {!collapsed && <span>Left Items</span>}
             </Link>
 
             <Link
