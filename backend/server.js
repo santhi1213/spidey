@@ -100,15 +100,19 @@ app.post("/login", async (req, res) => {
 
         const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "1h" });
 
-        // Send the token back to the client
         res.status(200).json({
             message: "Login successful",
-            token, // Include the token in the response
+            token,
         });
     } catch (err) {
-        res.status(500).json({ message: "Internal server error" });
+        console.error("Login Error:", err);
+        res.status(500).json({
+            message: "Internal server error",
+            error: err.stack,  // Log the full error stack for better diagnosis
+        });
     }
 });
+
 app.post("/producthandover", async (req, res) => {
     const {
         clientName,
