@@ -94,7 +94,7 @@ app.post('/login', async (req, res) => {
 
     // Simulate authentication
     console.log('Authenticating user:', username);
-    if (username === 'admin' && password === 'password') {
+    if (username === 'admin@gmail.com' && password === 'password') {
         console.log('Authentication successful');
         return res.status(200).json({ token: 'fake-jwt-token' });
     }
