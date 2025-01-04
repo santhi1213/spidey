@@ -83,35 +83,28 @@ app.post("/register", async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
-app.post("/login", async (req, res) => {
+app.post('/login', async (req, res) => {
+    console.log('Login endpoint called');
     const { username, password } = req.body;
 
-    try {
-        const findUser = await User.findOne({ username });
-
-        if (!findUser) {
-            return res.status(400).json({ message: "User not found" });
-        }
-
-        const isMatched = await bcrypt.compare(password, findUser.password);
-        if (!isMatched) {
-            return res.status(400).json({ message: "Password not matched" });
-        }
-
-        const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "1h" });
-
-        res.status(200).json({
-            message: "Login successful",
-            token,
-        });
-    } catch (err) {
-        console.error("Login Error:", err);
-        res.status(500).json({
-            message: "Internal server error",
-            error: err.stack,  // Log the full error stack for better diagnosis
-        });
+    if (!username || !password) {
+        console.log('Missing username or password');
+        return res.status(400).json({ message: 'Username and password are required.' });
     }
+
+    console.log('Checking credentials...');
+    // Simulate database delay
+    await new Promise(resolve => setTimeout(resolve, 500)); // Mock delay
+    
+    if (username === 'raju@gmail.com' && password === 'raju1234') {
+        console.log('Login successful');
+        return res.status(200).json({ token: 'fake-jwt-token' });
+    }
+
+    console.log('Invalid credentials');
+    return res.status(401).json({ message: 'Invalid credentials.' });
 });
+
 
 app.post("/producthandover", async (req, res) => {
     const {
