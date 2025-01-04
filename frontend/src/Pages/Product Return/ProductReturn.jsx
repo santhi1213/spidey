@@ -13,7 +13,7 @@ const categories = [
 const ProductHandover = ({ isSidebarOpen }) => {
     const [selectedClient, setSelectedClient] = useState('');
     const [isModalOpen, setIsModalOpen ] = useState(false);
-        const [modalData, seetModalData] = useState()
+    const [modalData, seetModalData] = useState()
     const [displayCategories, setDisplayCategories] = useState(false);
     const currentDate = new Date().toISOString().slice(0, 10);
     const [apiData, setApiData] = useState([]);
@@ -27,7 +27,6 @@ const ProductHandover = ({ isSidebarOpen }) => {
         date: currentDate,
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
-
     const handleModalOpen =(item)=>{
         setIsModalOpen(true)
         seetModalData(item)
@@ -35,7 +34,6 @@ const ProductHandover = ({ isSidebarOpen }) => {
     const handleModalClose = () =>{
         setIsModalOpen(false)
     }
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -113,12 +111,10 @@ const ProductHandover = ({ isSidebarOpen }) => {
         console.log(data);
 
     }
-
     useEffect(() => {
         AllItems();
         AllUsers();
     }, [uploadItems])
-
     useEffect(() => {
         setDisplayCategories(selectedClient && selectedClient !== "#");
     }, [selectedClient]);
@@ -220,7 +216,7 @@ const ProductHandover = ({ isSidebarOpen }) => {
                                 <td>{item.pesaraBatter}</td>
                                 <td>{Number(item.idlyBatter) + Number(item.dosaBatter) +
                                     Number(item.bobbaraBatter) + Number(item.pesaraBatter)}</td>
-                                    <td className="inline-block cursor-pointer" onClick={()=>handleModalOpen(item)}><BiEdit/></td>
+                                <td className="inline-block cursor-pointer" onClick={()=>handleModalOpen(item)}><BiEdit className="text-red-600"/></td>
                             </tr>
                         ))}
                     </tbody>

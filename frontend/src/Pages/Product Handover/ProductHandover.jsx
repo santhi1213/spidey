@@ -27,7 +27,6 @@ const ProductHandover = ({ isSidebarOpen }) => {
         date: currentDate,
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
-
     const handleModalOpen =(item)=>{
         setIsModalOpen(true)
         seetModalData(item)
@@ -42,7 +41,6 @@ const ProductHandover = ({ isSidebarOpen }) => {
             [name]: value,
         }));
     };
-
     const AllUsers = async () => {
         try {
             const response = await fetch('http://localhost:5001/users');
@@ -105,9 +103,6 @@ const ProductHandover = ({ isSidebarOpen }) => {
         AllUsers();
         AllItems();
     }, [uploadItems])
-
-   
-
     const handleClientChange = (event) => {
         const value = event.target.value;
         setSelectedClient(value);
@@ -116,7 +111,6 @@ const ProductHandover = ({ isSidebarOpen }) => {
             clientName: value,
         }));
     };
-
     useEffect(() => {
         setDisplayCategories(selectedClient && selectedClient !== "#");
     }, [selectedClient]);
@@ -220,7 +214,7 @@ const ProductHandover = ({ isSidebarOpen }) => {
                                 <td>{item.pesaraBatter}</td>
                                 <td>{Number(item.idlyBatter) + Number(item.dosaBatter) +
                                     Number(item.bobbaraBatter) + Number(item.pesaraBatter)}</td>
-                                    <td className="inline-block cursor-pointer" onClick={()=>handleModalOpen(item)}><BiEdit/></td>
+                                    <td className="inline-block cursor-pointer" onClick={()=>handleModalOpen(item)}><BiEdit className="text-red-600"/></td>
                             </tr>
                         ))}
                     </tbody>

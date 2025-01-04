@@ -18,6 +18,16 @@ const AddClient = ({ isSidebarOpen }) => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault(); 
+        const phoneRegex = /^[0-9]{10}$/;
+    
+        if (!formData.contact) {
+            alert("Contact number is required");
+            return; 
+        } else if (!phoneRegex.test(formData.contact)) {
+            alert("Contact number must be a valid 10-digit phone number");
+            return; 
+        }
+    
         try {
             const response = await fetch("http://localhost:5001/adduser", {
                 method: 'POST',
@@ -37,13 +47,14 @@ const AddClient = ({ isSidebarOpen }) => {
                 userName: '',
                 location: '',
                 contact: '',
-                date: new Date() 
+                date: new Date()
             });
         } catch (err) {
             alert(err.message);
             console.error(err.message);
         }
     };
+    
     const AllUsers = async()=>{
         try{
             const response = await fetch('http://localhost:5001/users');
@@ -58,7 +69,6 @@ const AddClient = ({ isSidebarOpen }) => {
             alert(err.message)
         }
     }
-
     useEffect(()=>{
         AllUsers();
     },[handleSubmit])
