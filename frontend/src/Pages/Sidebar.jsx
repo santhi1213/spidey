@@ -2,9 +2,19 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaHome, FaUser, FaCog } from "react-icons/fa";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+import { IoExitOutline } from "react-icons/io5";
+import { RiDashboardHorizontalFill } from "react-icons/ri";
+import { FaHandHolding } from "react-icons/fa";
+import { IoPersonAdd } from "react-icons/io5";
+import { MdCrisisAlert } from "react-icons/md";
 
-const Sidebar = ({ collapsed, toggleSidebar }) => {
+
+const Sidebar = ({ collapsed, toggleSidebar, setIsLogin }) => {
   const location = useLocation(); 
+  const logout = () =>{
+    localStorage.clear();
+    location('/')
+  }
   const [active, setActive] = useState(location.pathname); 
 
   const isActive = (path) => active === path ? "bg-gray-700" : "";
@@ -35,7 +45,7 @@ const Sidebar = ({ collapsed, toggleSidebar }) => {
               className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/dashboard')}`}
               onClick={() => setActive('/dashboard')} 
             >
-              <FaHome className="text-xl" />
+              <RiDashboardHorizontalFill className="text-xl" />
               {!collapsed && <span>Dashboard</span>}
             </Link>
 
@@ -44,7 +54,7 @@ const Sidebar = ({ collapsed, toggleSidebar }) => {
               className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/product-handover')}`}
               onClick={() => setActive('/product-handover')} 
             >
-              <FaHome className="text-xl" />
+              <FaHandHolding className="text-xl" />
               {!collapsed && <span>Product Handover</span>}
             </Link>
             
@@ -53,17 +63,8 @@ const Sidebar = ({ collapsed, toggleSidebar }) => {
               className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/product-return')}`}
               onClick={() => setActive('/product-return')} 
             >
-              <FaHome className="text-xl" />
+              <FaHandHolding className="text-xl rotate-180" />
               {!collapsed && <span>Product Return</span>}
-            </Link>
-
-            <Link
-              to="/add-client"
-              className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/add-client')}`}
-              onClick={() => setActive('/add-client')} 
-            >
-              <FaHome className="text-xl" />
-              {!collapsed && <span>Add Client</span>}
             </Link>
 
             <Link
@@ -71,11 +72,20 @@ const Sidebar = ({ collapsed, toggleSidebar }) => {
               className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/left-items')}`}
               onClick={() => setActive('/left-items')} 
             >
-              <FaHome className="text-xl" />
-              {!collapsed && <span>Left Items</span>}
+              <MdCrisisAlert className="text-xl" />
+              {!collapsed && <span>Sold Items</span>}
             </Link>
 
             <Link
+              to="/add-client"
+              className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/add-client')}`}
+              onClick={() => setActive('/add-client')} 
+            >
+              <IoPersonAdd className="text-xl" />
+              {!collapsed && <span>Add Client</span>}
+            </Link>
+
+            {/* <Link
               to="/profile"
               className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/profile')}`}
               onClick={() => setActive('/profile')} 
@@ -92,11 +102,18 @@ const Sidebar = ({ collapsed, toggleSidebar }) => {
             >
               <FaCog className="text-xl" />
               {!collapsed && <span>Settings</span>}
-            </Link>
-          </div>
+            </Link> */}
+          </div> 
 
-          <div className="pl-4 mt-[90%]">
-            <Link to="/">Logout</Link>
+          <div className="pl-4 mt-[95%]">
+          <Link
+              to="/"
+              className={`flex items-center space-x-2 hover:bg-gray-700 p-2 w-[90%] rounded-md`}
+              onClick={logout}
+            >
+              <IoExitOutline className="text-xl" />
+              {!collapsed && <span>Logout</span>}
+            </Link>
           </div>
         </div>
     </div>

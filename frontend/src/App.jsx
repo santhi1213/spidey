@@ -19,9 +19,9 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="flex h-screen">
+      <div className="flex h-screen bg-gray-300">
         {isLogin && (
-          <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
+          <Sidebar collapsed={collapsed} setIsLogin={setIsLogin} toggleSidebar={toggleSidebar} />
         )}
 
         <div

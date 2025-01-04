@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 const LeftItems = ({ isSidebarOpen }) => {
     const currentDate = new Date().toISOString().slice(0, 10);
     const [remainingItems, setRemainingItems] = useState([]);
-    const [date, setDate] = useState(currentDate)
+    const [date, setDate] = useState('')
 
     const fetchLeftItems = async () => {
         try {
@@ -35,16 +35,18 @@ const LeftItems = ({ isSidebarOpen }) => {
         <div
             className={`${
                 isSidebarOpen ? "ml-16 w-[96%]" : "ml-64 w-[83%]"
-            } transition-all`}
+            } transition-all  overflow-y-auto border rounded-lg bg-white h-[650px] p-4 shadow-xl`}
         >
             <div>
-                <h1>Remaining Items</h1>
-                <div>
-                    <label htmlFor="date">Date</label>
-                    <input type="date" value={date} onChange={(e)=>setDate(e.target.value)} />
+                <div className="text-center">
+                    <h1 className="text-xl font-bold text-green-700">Sold Items</h1>
+                </div>
+                <div className="flex flex-col w-[20%] gap-2 my-4">
+                    <label className="text-green-700 font-semibold" htmlFor="date">Date</label>
+                    <input className="border border-gray-300 rounded-md p-1" type="date" value={date} onChange={(e)=>setDate(e.target.value)} />
                 </div>
                 <table className="w-full border">
-                    <thead className="bg-gray-400">
+                    <thead className="bg-gray-300">
                         <tr>
                             <th>SlNo</th>
                             <th>Client Name</th>
@@ -53,6 +55,7 @@ const LeftItems = ({ isSidebarOpen }) => {
                             <th>Dosa Batter</th>
                             <th>Bobbara Batter</th>
                             <th>Pesara Batter</th>
+                            <th>Total Items</th>
                         </tr>
                     </thead>
                     <tbody className="text-center">
@@ -65,6 +68,8 @@ const LeftItems = ({ isSidebarOpen }) => {
                                 <td>{item.dosaBatter}</td>
                                 <td>{item.bobbaraBatter}</td>
                                 <td>{item.pesaraBatter}</td>
+                                <td>{Number(item.idlyBatter) + Number(item.dosaBatter) +
+                                    Number(item.bobbaraBatter) + Number(item.pesaraBatter)}</td>
                             </tr>
                         ))}
                     </tbody>
