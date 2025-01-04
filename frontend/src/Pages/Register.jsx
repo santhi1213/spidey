@@ -10,7 +10,7 @@ const Register = ({ setIsLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
-      const response = await fetch("https://spidey-api-mu.vercel.app/register",{
+      const response = await fetch("http://localhost:5001/register",{
         method:'POST',
         headers:{
           'Content-Type':'application/json'
@@ -22,7 +22,7 @@ const Register = ({ setIsLogin }) => {
         }),  
       })
       if (!response.ok) {
-        const errorText = await response.text(); // Get the error message as text
+        const errorText = await response.text(); 
         console.error("Error response:", errorText);
         return;
       }

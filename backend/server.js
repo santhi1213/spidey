@@ -7,11 +7,7 @@ const jwt = require("jsonwebtoken");
 const app = express();
 
 app.use(express.json());
-app.use(cors({
-    origin:['https://spidey-ui.vercel.app'],
-    methods:['GET','POST','PUT'],
-    credentials: true
-}));
+app.use(cors());
 
 // mongoose
 //     // .connect("mongodb://localhost:27017/spidey")
@@ -22,7 +18,7 @@ app.use(cors({
 mongoose
     .connect("mongodb+srv://santhiraju32:h2BVjIw1gaWTExgD@batter-management-db.jlsj4.mongodb.net/?retryWrites=true&w=majority&appName=batter-management-db")
     .then(() => console.log("MongoDB Connected Successfully"))
-    .catch((err) => console.error("MongoDB Connection Failed:", err));  // Log the error in case of failure
+    .catch((err) => console.error("MongoDB Connection Failed:", err));  
 
 
     const UserSchema = new mongoose.Schema({
@@ -92,15 +88,26 @@ app.post('/login', async (req, res) => {
         return res.status(400).json({ message: 'Username and password are required.' });
     }
 
-    // Simulate authentication
-    console.log('Authenticating user:', username);
-    if (username === 'admin@gmail.com' && password === 'password') {
-        console.log('Authentication successful');
-        return res.status(200).json({ token: 'fake-jwt-token' });
+    const user = await User.findOne({ username });
+    if (!user) {
+        console.log('User not found');
+        return res.status(400).json({ message: 'User not found' });
     }
 
-    console.log('Invalid credentials');
-    return res.status(401).json({ message: 'Invalid credentials.' });
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+        return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign(
+        { userId: user._id, username: user.username }, 
+        'your-secret-key', 
+        { expiresIn: '1h' } 
+    );
+
+    res.status(200).json({ message: 'Login successful', token });
+
+    console.log('Login successful');
 });
 app.post("/producthandover", async (req, res) => {
     const {
@@ -307,7 +314,6 @@ app.get("/getHandoverItems", async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
-
 app.get("/getReturnItems", async(req,res)=>{
     try{
         const items = await returnItems.find();
@@ -377,6 +383,8 @@ app.put("/updatereturn/:id",async(req,res)=>{
     }
 })
 
-module.exports = app;
+app.listen(5001,()=>{
+    console.log('Server running on http://localhost:5001')
+})
 
 
