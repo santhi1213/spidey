@@ -27,28 +27,29 @@ const Login = ({ setIsLogin }) => {
 
     try {
       const response = await fetch(`${API_URL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password }),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
-        localStorage.setItem('authToken', data.token); 
-        console.log('Login successful');
-        setIsLogin(true);
-        navigate("/dashboard");
+          localStorage.setItem('authToken', data.token);
+          console.log('Login successful');
+          setIsLogin(true);
+          navigate("/dashboard");
       } else {
-        console.error(data.message); 
-        alert(data.message);
+          console.error('Error:', data.message);
+          alert(data.message);
       }
-    } catch (error) {
-      console.error('Error logging in:', error.message);
-      alert('An error occurred while logging in. Please try again later.');
-    }
+  } catch (error) {
+      console.error('Error logging in:', error);
+      alert('Failed to fetch the API. Please check your network or backend deployment.');
+  }
+  
   };
 
   return (
