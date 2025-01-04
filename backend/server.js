@@ -13,18 +13,25 @@ app.use(cors({
     credentials: true
 }));
 
+// mongoose
+//     // .connect("mongodb://localhost:27017/spidey")
+//     .connect("mongodb+srv://santhiraju32:h2BVjIw1gaWTExgD@batter-management-db.jlsj4.mongodb.net/?retryWrites=true&w=majority&appName=batter-management-db")
+//     .then(() => console.log("MongoDB Connected Successfully"))
+//     .catch((err) => console.log("MongoDB Connection Failed..."));
+
 mongoose
-    // .connect("mongodb://localhost:27017/spidey")
     .connect("mongodb+srv://santhiraju32:h2BVjIw1gaWTExgD@batter-management-db.jlsj4.mongodb.net/?retryWrites=true&w=majority&appName=batter-management-db")
     .then(() => console.log("MongoDB Connected Successfully"))
-    .catch((err) => console.log("MongoDB Connection Failed..."));
+    .catch((err) => console.error("MongoDB Connection Failed:", err));  // Log the error in case of failure
 
-const UserSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    username: { type: String, required: true },
-    password: { type: String, required: true },
-});
-const User = mongoose.model("User", UserSchema);
+
+    const UserSchema = new mongoose.Schema({
+        name: { type: String, required: true },
+        username: { type: String, required: true, unique: true },  // Ensure username is unique
+        password: { type: String, required: true },
+    });
+    const User = mongoose.model("User", UserSchema);
+    
 
 const HandoverItems = new mongoose.Schema({
     clientName: { type: String, required: true },
