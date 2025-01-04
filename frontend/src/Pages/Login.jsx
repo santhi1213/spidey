@@ -6,7 +6,7 @@ const Login = ({ setIsLogin }) => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const API_URL = 'https://spidey-api-six.vercel.app'; // Replace with your API base URL
+  const API_URL = 'https://spidey-api-mu.vercel.app'; // Replace with your API base URL
 
   useEffect(() => {
     // Check if the authToken exists in localStorage on component mount

@@ -10,7 +10,7 @@ const Register = ({ setIsLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
-      const response = await fetch("https://spidey-api-six.vercel.app/register",{
+      const response = await fetch("https://spidey-api-mu.vercel.app/register",{
         method:'POST',
         headers:{
           'Content-Type':'application/json'

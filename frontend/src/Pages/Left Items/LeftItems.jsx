@@ -7,7 +7,7 @@ const LeftItems = ({ isSidebarOpen }) => {
 
     const fetchLeftItems = async () => {
         try {
-            const response = await fetch("https://spidey-api-six.vercel.app/getRemainingItems", {
+            const response = await fetch("https://spidey-api-mu.vercel.app/getRemainingItems", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ date: date }),

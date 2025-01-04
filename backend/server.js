@@ -8,8 +8,8 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-    origin:['https://spidey-frontend.vercel.app/'],
-    methods:['GET','POST',''],
+    origin:['https://spidey-ui.vercel.app'],
+    methods:['GET','POST','PUT'],
     credentials: true
 }));
 
