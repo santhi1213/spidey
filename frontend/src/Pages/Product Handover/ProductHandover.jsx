@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { BiEdit } from "react-icons/bi";
+import ProductHandoverModal from "../../components/Modals/ProductHandoverModal";
 
 const categories = [
     { id: "idlyBatter", label: "Idly Batter", type: "number" },
@@ -14,6 +16,8 @@ const ProductHandover = ({ isSidebarOpen }) => {
     const currentDate = new Date().toISOString().slice(0, 10);
     const [apiData, setApiData] = useState([]);
     const [ItemsData, setItemsData] = useState([]);
+    const [isModalOpen, setIsModalOpen ] = useState(false);
+    const [modalData, seetModalData] = useState()
     const [formData, setFormData] = useState({
         clientName: '',
         idlyBatter: '',
@@ -24,6 +28,13 @@ const ProductHandover = ({ isSidebarOpen }) => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    const handleModalOpen =(item)=>{
+        setIsModalOpen(true)
+        seetModalData(item)
+    }
+    const handleModalClose = () =>{
+        setIsModalOpen(false)
+    }
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -60,7 +71,7 @@ const ProductHandover = ({ isSidebarOpen }) => {
     useEffect(() => {
         AllUsers();
         AllItems();
-    }, [])
+    }, [uploadItems])
 
     const uploadItems = async (e) => {
         e.preventDefault();
@@ -194,6 +205,7 @@ const ProductHandover = ({ isSidebarOpen }) => {
                             <th>BobbaraBatter</th>
                             <th>PesaraBatter</th>
                             <th>Total Items</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody className="text-center">
@@ -208,11 +220,13 @@ const ProductHandover = ({ isSidebarOpen }) => {
                                 <td>{item.pesaraBatter}</td>
                                 <td>{Number(item.idlyBatter) + Number(item.dosaBatter) +
                                     Number(item.bobbaraBatter) + Number(item.pesaraBatter)}</td>
+                                    <td className="inline-block cursor-pointer" onClick={()=>handleModalOpen(item)}><BiEdit/></td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+            <ProductHandoverModal isOpen={isModalOpen} onClose={handleModalClose} data={modalData}/>
         </div>
     );
 };

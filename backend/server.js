@@ -306,6 +306,66 @@ app.get("/getReturnItems", async(req,res)=>{
         res.status(500).json({message:'internal server error'})
     }
 })
+app.put("/updateproduct/:id", async (req, res) => {
+    const {
+        idlyBatter,
+        dosaBatter,
+        pesaraBatter,
+        bobbaraBatter,
+    } = req.body;
+
+    const { id } = req.params;
+
+    try {
+        const updatedItem = await handoverItems.findByIdAndUpdate(
+            id,
+            {
+                $set: {
+                    idlyBatter,
+                    dosaBatter,
+                    pesaraBatter,
+                    bobbaraBatter,
+                },
+            },
+            { new: true } 
+        );
+
+        if (!updatedItem) {
+            return res.status(404).json({ message: "Item not found" });
+        }
+
+        res.status(200).json({
+            message: "Item updated successfully",
+            updatedItem,
+        });
+    } catch (err) {
+        console.error("Error updating item:", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+app.put("/updatereturn/:id",async(req,res)=>{
+    const {idlyBatter, dosaBatter, bobbaraBatter, pesaraBatter} = req.body;
+    const {id} = req.params;
+
+    try{
+        const updateItems = await returnItems.findByIdAndUpdate(id,{
+            $set:{
+                idlyBatter,
+                dosaBatter,
+                bobbaraBatter,
+                pesaraBatter
+            },
+        },
+        {new:true}
+    );
+    if(!updateItems){
+        res.status(400).json({message:'Items not found'})
+    }
+    res.status(200).json({message:'Items updated successfully'})
+    }catch(err){
+        res.status(500).json({message:'internal server error'})
+    }
+})
 
 
 app.listen(5001, () => {

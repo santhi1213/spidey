@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { BiEdit } from "react-icons/bi";
+import ProductReturnModal from "../../components/Modals/ProductReturnModal";
 
 const categories = [
     { id: "idlyBatter", label: "Idly Batter", type: "number" },
@@ -10,6 +12,8 @@ const categories = [
 
 const ProductHandover = ({ isSidebarOpen }) => {
     const [selectedClient, setSelectedClient] = useState('');
+    const [isModalOpen, setIsModalOpen ] = useState(false);
+        const [modalData, seetModalData] = useState()
     const [displayCategories, setDisplayCategories] = useState(false);
     const currentDate = new Date().toISOString().slice(0, 10);
     const [apiData, setApiData] = useState([]);
@@ -23,6 +27,14 @@ const ProductHandover = ({ isSidebarOpen }) => {
         date: currentDate,
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleModalOpen =(item)=>{
+        setIsModalOpen(true)
+        seetModalData(item)
+    }
+    const handleModalClose = () =>{
+        setIsModalOpen(false)
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -105,7 +117,7 @@ const ProductHandover = ({ isSidebarOpen }) => {
     useEffect(() => {
         AllItems();
         AllUsers();
-    }, [])
+    }, [uploadItems])
 
     useEffect(() => {
         setDisplayCategories(selectedClient && selectedClient !== "#");
@@ -193,6 +205,7 @@ const ProductHandover = ({ isSidebarOpen }) => {
                             <th>BobbaraBatter</th>
                             <th>PesaraBatter</th>
                             <th>Total Items</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody className="text-center">
@@ -207,11 +220,13 @@ const ProductHandover = ({ isSidebarOpen }) => {
                                 <td>{item.pesaraBatter}</td>
                                 <td>{Number(item.idlyBatter) + Number(item.dosaBatter) +
                                     Number(item.bobbaraBatter) + Number(item.pesaraBatter)}</td>
+                                    <td className="inline-block cursor-pointer" onClick={()=>handleModalOpen(item)}><BiEdit/></td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+            <ProductReturnModal isOpen={isModalOpen} onClose={handleModalClose} data={modalData}/>
         </div>
     );
 };

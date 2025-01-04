@@ -54,7 +54,7 @@ const Sidebar = ({ collapsed, toggleSidebar, setIsLogin }) => {
               className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/product-handover')}`}
               onClick={() => setActive('/product-handover')} 
             >
-              <FaHandHolding className="text-xl" />
+              <FaHandHolding className="text-xl transform-scale-y-1" />
               {!collapsed && <span>Product Handover</span>}
             </Link>
             

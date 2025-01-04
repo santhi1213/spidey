@@ -61,7 +61,7 @@ const AddClient = ({ isSidebarOpen }) => {
 
     useEffect(()=>{
         AllUsers();
-    },[])
+    },[handleSubmit])
 
     return (
         <div
