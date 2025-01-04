@@ -67,12 +67,6 @@ const ProductHandover = ({ isSidebarOpen }) => {
         console.log(data);
 
     }
-
-    useEffect(() => {
-        AllUsers();
-        AllItems();
-    }, [uploadItems])
-
     const uploadItems = async (e) => {
         e.preventDefault();
         if (!formData.clientName || formData.clientName === "#") {
@@ -107,6 +101,12 @@ const ProductHandover = ({ isSidebarOpen }) => {
             setIsSubmitting(false);
         }
     };
+    useEffect(() => {
+        AllUsers();
+        AllItems();
+    }, [uploadItems])
+
+   
 
     const handleClientChange = (event) => {
         const value = event.target.value;

@@ -69,7 +69,7 @@ const ProductReturnModal = ({ isOpen, onClose, data }) => {
       <div className="bg-white p-6 rounded-md w-full max-w-4xl h-auto max-h-[90%] overflow-y-auto">
         {/* Header */}
         <div className="flex justify-between items-center px-4 border-b pb-2">
-          <h1 className="text-lg font-semibold">Product Handover</h1>
+          <h1 className="text-lg font-semibold">Product Return</h1>
           <button
             onClick={onClose}
             className="text-gray-500 text-[10px] bg-black p-2 rounded-full hover:text-white focus:outline-none"
