@@ -102,8 +102,6 @@ app.post('/login', async (req, res) => {
     console.log('Invalid credentials');
     return res.status(401).json({ message: 'Invalid credentials.' });
 });
-
-
 app.post("/producthandover", async (req, res) => {
     const {
         clientName,
@@ -298,14 +296,18 @@ app.get("/getRemainingItemsWithoutDate", async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
-app.get("/getHandoverItems", async(req,res)=>{
-    try{
+app.get("/getHandoverItems", async (req, res) => {
+    console.log("Fetching handover items...");
+    try {
         const items = await handoverItems.find();
-        res.status(200).json({message:'data fetched successfullyyyyy', items})
-    }catch(err){
-        res.status(500).json({message:'internal server error'})
+        console.log("Items fetched:", items);
+        res.status(200).json({ message: "Data fetched successfully", items });
+    } catch (err) {
+        console.error("Error fetching handover items:", err);
+        res.status(500).json({ message: "Internal server error" });
     }
-})
+});
+
 app.get("/getReturnItems", async(req,res)=>{
     try{
         const items = await returnItems.find();
