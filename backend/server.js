@@ -7,7 +7,11 @@ const jwt = require("jsonwebtoken");
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin:['https://spidey-frontend.vercel.app'],
+    methods:['GET','POST','PUT'],
+    credentials: true
+}));
 
 mongoose
     // .connect("mongodb://localhost:27017/spidey")
@@ -51,7 +55,9 @@ const AddUser = new mongoose.Schema({
 const newUser = mongoose.model("AddUser", AddUser);
 
 const JWT_SECRET = "your_secret_key";
-
+app.get("/",async(req,res)=>{
+    res.json('hello')
+})
 app.post("/register", async (req, res) => {
     const { name, username, password } = req.body;
 
