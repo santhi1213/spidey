@@ -19,7 +19,7 @@ const AddClient = ({ isSidebarOpen }) => {
     const handleSubmit = async (e) => {
         e.preventDefault(); 
         try {
-            const response = await fetch("http://localhost:5001/adduser", {
+            const response = await fetch("https://spidey-api-seven.vercel.app/adduser", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -46,7 +46,7 @@ const AddClient = ({ isSidebarOpen }) => {
     };
     const AllUsers = async()=>{
         try{
-            const response = await fetch('http://localhost:5001/users');
+            const response = await fetch('https://spidey-api-seven.vercel.app/users');
             if(!response){
                 console.log(err.message)
             }
