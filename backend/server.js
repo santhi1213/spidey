@@ -61,20 +61,26 @@ const JWT_SECRET = "your_secret_key";
 app.get("/",async(req,res)=>{
     res.json('hello')
 })
+const { v4: uuidv4 } = require("uuid"); 
+
 app.post("/register", async (req, res) => {
     const { name, username, password } = req.body;
 
     try {
         const existingUser = await User.findOne({ username });
         if (existingUser) {
-            res.status(400).json({ message: "User already exists" });
-        } else {
-            const hashedPassword = await bcrypt.hash(password, 10);
-            const newUser = new User({ name, username, password: hashedPassword });
-            await newUser.save();
-            const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "1h" });
-            res.status(200).json({ message: "User registration successful" });
+            return res.status(400).json({ message: "User already exists" });
         }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const userId = uuidv4(); 
+
+        const newUser = new User({ id: userId, name, username, password: hashedPassword });
+        await newUser.save();
+
+        const token = jwt.sign({ username, id: userId }, JWT_SECRET, { expiresIn: "1h" });
+
+        res.status(200).json({ message: "User registration successful", id: userId, token, name });
     } catch (err) {
         res.status(500).json({ message: "Internal server error" });
     }
@@ -84,13 +90,11 @@ app.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
-        console.log('Missing credentials');
         return res.status(400).json({ message: 'Username and password are required.' });
     }
 
     const user = await User.findOne({ username });
     if (!user) {
-        console.log('User not found');
         return res.status(400).json({ message: 'User not found' });
     }
 
@@ -105,9 +109,7 @@ app.post('/login', async (req, res) => {
         { expiresIn: '1h' } 
     );
 
-    res.status(200).json({ message: 'Login successful', token });
-
-    console.log('Login successful');
+    res.status(200).json({ message: 'Login successful', token, name:user.name });
 });
 app.post("/producthandover", async (req, res) => {
     const {
@@ -382,6 +384,43 @@ app.put("/updatereturn/:id",async(req,res)=>{
         res.status(500).json({message:'internal server error'})
     }
 })
+
+
+
+app.put('/updatepassword', async (req, res) => {
+    const { oldPassword, newPassword, username } = req.body;
+
+    try {
+        // Find the user by username (or email) if it's not the ObjectId
+        const user = await User.findOne({ username }); // Use `findOne` if you're searching by email or other unique field
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Verify old password
+        const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ message: "Old password is incorrect" });
+        }
+        
+        if (newPassword.length < 8) {
+            return res.status(400).json({ message: "Password must be at least 8 characters long" });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+
+        await user.save();
+
+        return res.status(200).json({ message: "Password updated successfully" });
+    } catch (error) {
+        console.error(`Error updating password for user ${username}:`, error); // Log with username instead of `id`
+        return res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+
+
 
 app.listen(5001,()=>{
     console.log('Server running on http://localhost:5001')

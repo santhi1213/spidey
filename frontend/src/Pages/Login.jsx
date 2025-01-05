@@ -6,19 +6,18 @@ const Login = ({ setIsLogin }) => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const API_URL = 'http://localhost:5001'; // Replace with your API base URL
+  const API_URL = 'http://localhost:5001'; 
 
   useEffect(() => {
-    // Check if the authToken exists in localStorage on component mount
     const token = localStorage.getItem('authToken');
     if (token) {
-      setIsLogin(true);  // Set login state to true if token exists
-      navigate("/dashboard");  // Redirect to dashboard if already logged in
+      setIsLogin(true);  
+      navigate("/dashboard");  
     }
   }, [navigate, setIsLogin]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault(); 
     
     if (!username || !password) {
       alert("Please enter both username and password.");
@@ -38,6 +37,8 @@ const Login = ({ setIsLogin }) => {
   
       if (response.ok) {
           localStorage.setItem('authToken', data.token);
+          localStorage.setItem('email',username);
+          localStorage.setItem('name',data.name);
           console.log('Login successful');
           setIsLogin(true);
           navigate("/dashboard");

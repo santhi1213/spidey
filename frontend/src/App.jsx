@@ -8,6 +8,7 @@ import AddClient from "./Pages/AddClient/AddClient";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import LeftItems from './Pages/Left Items/LeftItems';
+import Profile from "./Pages/Profile/Profile";
 
 function App() {
   const [collapsed, setCollapsed] = useState(false);  
@@ -41,6 +42,7 @@ function App() {
             <Route path="/product-return" element={isLogin ? <ProductReturn isSidebarOpen={collapsed}/> : <Navigate to='/'/>} />
             <Route path="/left-items" element={isLogin ? <LeftItems isSidebarOpen={collapsed}/> : <Navigate to='/'/>} />
             <Route path="/add-client" element={isLogin ? <AddClient isSidebarOpen={collapsed}/> : <Navigate to='/'/>} />
+            <Route path="/profile" element ={isLogin ? <Profile isSidebarOpen={collapsed}/> : <Navigate to='/'/> } />
           </Routes>
 
         </div>

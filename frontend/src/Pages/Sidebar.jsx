@@ -85,7 +85,7 @@ const Sidebar = ({ collapsed, toggleSidebar, setIsLogin }) => {
               {!collapsed && <span>Add Client</span>}
             </Link>
 
-            {/* <Link
+             <Link
               to="/profile"
               className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/profile')}`}
               onClick={() => setActive('/profile')} 
@@ -94,7 +94,7 @@ const Sidebar = ({ collapsed, toggleSidebar, setIsLogin }) => {
               {!collapsed && <span>Profile</span>}
               
             </Link>
-
+{/*
             <Link
               to="/settings"
               className={`flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md ${isActive('/settings')}`}

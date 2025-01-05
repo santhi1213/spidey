@@ -29,8 +29,11 @@ const Register = ({ setIsLogin }) => {
   
       const data = await response.json();
       console.log(data)
+      localStorage.setItem("id",data.id);
+      localStorage.setItem('name',data.name);
+      localStorage.setItem('token', data.token);
       setIsLogin(true);
-    navigate("/dashboard");
+      navigate("/dashboard");
     }catch(err){
       console.log(err.message)
     }
