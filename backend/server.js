@@ -391,13 +391,11 @@ app.put('/updatepassword', async (req, res) => {
     const { oldPassword, newPassword, username } = req.body;
 
     try {
-        // Find the user by username (or email) if it's not the ObjectId
-        const user = await User.findOne({ username }); // Use `findOne` if you're searching by email or other unique field
+        const user = await User.findOne({ username }); 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Verify old password
         const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
         if (!isPasswordValid) {
             return res.status(400).json({ message: "Old password is incorrect" });
@@ -414,7 +412,7 @@ app.put('/updatepassword', async (req, res) => {
 
         return res.status(200).json({ message: "Password updated successfully" });
     } catch (error) {
-        console.error(`Error updating password for user ${username}:`, error); // Log with username instead of `id`
+        console.error(`Error updating password for user ${username}:`, error); 
         return res.status(500).json({ message: "Internal server error" });
     }
 });
