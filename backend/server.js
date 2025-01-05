@@ -9,25 +9,18 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// mongoose
-//     // .connect("mongodb://localhost:27017/spidey")
-//     .connect("mongodb+srv://santhiraju32:h2BVjIw1gaWTExgD@batter-management-db.jlsj4.mongodb.net/?retryWrites=true&w=majority&appName=batter-management-db")
-//     .then(() => console.log("MongoDB Connected Successfully"))
-//     .catch((err) => console.log("MongoDB Connection Failed..."));
-
 mongoose
     .connect("mongodb+srv://santhiraju32:h2BVjIw1gaWTExgD@batter-management-db.jlsj4.mongodb.net/?retryWrites=true&w=majority&appName=batter-management-db")
     .then(() => console.log("MongoDB Connected Successfully"))
-    .catch((err) => console.error("MongoDB Connection Failed:", err));  
+    .catch((err) => console.error("MongoDB Connection Failed:", err));
 
 
-    const UserSchema = new mongoose.Schema({
-        name: { type: String, required: true },
-        username: { type: String, required: true, unique: true },  // Ensure username is unique
-        password: { type: String, required: true },
-    });
-    const User = mongoose.model("User", UserSchema);
-    
+const UserSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    username: { type: String, required: true, unique: true },  // Ensure username is unique
+    password: { type: String, required: true },
+});
+const User = mongoose.model("User", UserSchema);
 
 const HandoverItems = new mongoose.Schema({
     clientName: { type: String, required: true },
@@ -58,10 +51,10 @@ const AddUser = new mongoose.Schema({
 const newUser = mongoose.model("AddUser", AddUser);
 
 const JWT_SECRET = "your_secret_key";
-app.get("/",async(req,res)=>{
+app.get("/", async (req, res) => {
     res.json('hello')
 })
-const { v4: uuidv4 } = require("uuid"); 
+const { v4: uuidv4 } = require("uuid");
 
 app.post("/register", async (req, res) => {
     const { name, username, password } = req.body;
@@ -73,7 +66,7 @@ app.post("/register", async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const userId = uuidv4(); 
+        const userId = uuidv4();
 
         const newUser = new User({ id: userId, name, username, password: hashedPassword });
         await newUser.save();
@@ -86,7 +79,6 @@ app.post("/register", async (req, res) => {
     }
 });
 app.post('/login', async (req, res) => {
-    console.log('Login request received');
     const { username, password } = req.body;
 
     if (!username || !password) {
@@ -104,12 +96,12 @@ app.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign(
-        { userId: user._id, username: user.username }, 
-        'your-secret-key', 
-        { expiresIn: '1h' } 
+        { userId: user._id, username: user.username },
+        'your-secret-key',
+        { expiresIn: '1h' }
     );
 
-    res.status(200).json({ message: 'Login successful', token, name:user.name });
+    res.status(200).json({ message: 'Login successful', token, name: user.name });
 });
 app.post("/producthandover", async (req, res) => {
     const {
@@ -214,11 +206,11 @@ app.post("/getRemainingItems", async (req, res) => {
 
     try {
         const handoverItemsForDate = await handoverItems.find(
-            date ? { date } : {} 
+            date ? { date } : {}
         );
 
         const returnItemsForDate = await returnItems.find(
-            date ? { date } : {} 
+            date ? { date } : {}
         );
 
         let remainingItems = [];
@@ -278,7 +270,7 @@ app.get("/getRemainingItemsWithoutDate", async (req, res) => {
             if (!returnItem) {
                 remainingItems.push(handoverItem);
             } else {
-               
+
                 const remainingItem = {
                     clientName: handoverItem.clientName,
                     idlyBatter: (
@@ -316,12 +308,12 @@ app.get("/getHandoverItems", async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
-app.get("/getReturnItems", async(req,res)=>{
-    try{
+app.get("/getReturnItems", async (req, res) => {
+    try {
         const items = await returnItems.find();
-        res.status(200).json({message:'data fetched successfullyyyyy', items})
-    }catch(err){
-        res.status(500).json({message:'internal server error'})
+        res.status(200).json({ message: 'data fetched successfullyyyyy', items })
+    } catch (err) {
+        res.status(500).json({ message: 'internal server error' })
     }
 })
 app.put("/updateproduct/:id", async (req, res) => {
@@ -345,7 +337,7 @@ app.put("/updateproduct/:id", async (req, res) => {
                     bobbaraBatter,
                 },
             },
-            { new: true } 
+            { new: true }
         );
 
         if (!updatedItem) {
@@ -361,37 +353,34 @@ app.put("/updateproduct/:id", async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
-app.put("/updatereturn/:id",async(req,res)=>{
-    const {idlyBatter, dosaBatter, bobbaraBatter, pesaraBatter} = req.body;
-    const {id} = req.params;
+app.put("/updatereturn/:id", async (req, res) => {
+    const { idlyBatter, dosaBatter, bobbaraBatter, pesaraBatter } = req.body;
+    const { id } = req.params;
 
-    try{
-        const updateItems = await returnItems.findByIdAndUpdate(id,{
-            $set:{
+    try {
+        const updateItems = await returnItems.findByIdAndUpdate(id, {
+            $set: {
                 idlyBatter,
                 dosaBatter,
                 bobbaraBatter,
                 pesaraBatter
             },
         },
-        {new:true}
-    );
-    if(!updateItems){
-        res.status(400).json({message:'Items not found'})
-    }
-    res.status(200).json({message:'Items updated successfully'})
-    }catch(err){
-        res.status(500).json({message:'internal server error'})
+            { new: true }
+        );
+        if (!updateItems) {
+            res.status(400).json({ message: 'Items not found' })
+        }
+        res.status(200).json({ message: 'Items updated successfully' })
+    } catch (err) {
+        res.status(500).json({ message: 'internal server error' })
     }
 })
-
-
-
 app.put('/updatepassword', async (req, res) => {
     const { oldPassword, newPassword, username } = req.body;
 
     try {
-        const user = await User.findOne({ username }); 
+        const user = await User.findOne({ username });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -400,7 +389,7 @@ app.put('/updatepassword', async (req, res) => {
         if (!isPasswordValid) {
             return res.status(400).json({ message: "Old password is incorrect" });
         }
-        
+
         if (newPassword.length < 8) {
             return res.status(400).json({ message: "Password must be at least 8 characters long" });
         }
@@ -412,15 +401,12 @@ app.put('/updatepassword', async (req, res) => {
 
         return res.status(200).json({ message: "Password updated successfully" });
     } catch (error) {
-        console.error(`Error updating password for user ${username}:`, error); 
+        console.error(`Error updating password for user ${username}:`, error);
         return res.status(500).json({ message: "Internal server error" });
     }
 });
 
-
-
-
-app.listen(5001,()=>{
+app.listen(5001, () => {
     console.log('Server running on http://localhost:5001')
 })
 
