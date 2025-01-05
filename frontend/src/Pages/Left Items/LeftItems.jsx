@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { RxCross1 } from "react-icons/rx";
+
 
 const LeftItems = ({ isSidebarOpen }) => {
-    const currentDate = new Date().toISOString().slice(0, 10);
     const [remainingItems, setRemainingItems] = useState([]);
     const [date, setDate] = useState('')
 
@@ -25,6 +26,9 @@ const LeftItems = ({ isSidebarOpen }) => {
             alert(err.message)
         }
     };
+    const handleClear =() =>{
+        setDate('')
+    }
 
     useEffect(() => {
         fetchLeftItems();
@@ -41,9 +45,14 @@ const LeftItems = ({ isSidebarOpen }) => {
                 <div className="text-center">
                     <h1 className="text-xl font-bold text-green-700">Sold Items</h1>
                 </div>
-                <div className="flex flex-col w-[20%] gap-2 my-4">
-                    <label className="text-green-700 font-semibold" htmlFor="date">Date</label>
-                    <input className="border border-gray-300 rounded-md p-1" type="date" value={date} onChange={(e)=>setDate(e.target.value)} />
+                <div className="flex gap-4 border mb-4 items-center">
+                    <div className="flex flex-col w-[20%] gap-2">
+                        <label className="text-green-700 font-semibold" htmlFor="date">Date</label>
+                        <input className="border border-gray-300 rounded-md p-1" type="date" value={date} onChange={(e)=>setDate(e.target.value)} />
+                    </div>
+                    <div>
+                        <button className="bg-red-400 px-2 mt-7 py-2 rounded-md text-white font-bold" onClick={handleClear}><RxCross1/></button>
+                    </div>
                 </div>
                 <table className="w-full border">
                     <thead className="bg-gray-300">

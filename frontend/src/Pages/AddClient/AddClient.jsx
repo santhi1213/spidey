@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { MdDelete } from "react-icons/md";
+
 
 const AddClient = ({ isSidebarOpen }) => {
     const date = new Date();
@@ -16,6 +18,20 @@ const AddClient = ({ isSidebarOpen }) => {
             [name]: value
         }));
     };
+    const AllUsers = async()=>{
+        try{
+            const response = await fetch('http://localhost:5001/users');
+            if(!response){
+                console.log(err.message)
+            }
+            const data = await response.json();
+            setApiData(data.reverse());
+            console.log(data);
+        }catch(err){
+            console.log(err.message);
+            alert(err.message)
+        }
+    }
     const handleSubmit = async (e) => {
         e.preventDefault(); 
         const phoneRegex = /^[0-9]{10}$/;
@@ -43,6 +59,7 @@ const AddClient = ({ isSidebarOpen }) => {
             const data = await response.json();
             console.log(data);
             alert(data.message);
+            AllUsers();
             setFormData({
                 userName: '',
                 location: '',
@@ -54,24 +71,34 @@ const AddClient = ({ isSidebarOpen }) => {
             console.error(err.message);
         }
     };
+    const deleteUser = async (id) => {
+        try {
+            const response = await fetch("http://localhost:5001/deleteUser", {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: id })
+            });
     
-    const AllUsers = async()=>{
-        try{
-            const response = await fetch('http://localhost:5001/users');
-            if(!response){
-                console.log(err.message)
+            if (!response.ok) {
+                const errorResponse = await response.json();
+                alert(errorResponse.message || "Failed to delete user");
+                return;
             }
+    
             const data = await response.json();
-            setApiData(data.reverse());
+            alert(data.message);
             console.log(data);
-        }catch(err){
-            console.log(err.message);
-            alert(err.message)
+            AllUsers();
+        } catch (err) {
+            console.error(err.message);
+            alert(`Error: ${err.message}`);
         }
-    }
+    };
     useEffect(()=>{
         AllUsers();
-    },[handleSubmit])
+    },[])
 
     return (
         <div
@@ -143,6 +170,7 @@ const AddClient = ({ isSidebarOpen }) => {
                                 <th>Location</th>
                                 <th>Contact</th>
                                 <th>Added Date</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody className="text-center">
@@ -153,6 +181,7 @@ const AddClient = ({ isSidebarOpen }) => {
                                     <td>{item.location}</td>
                                     <td>{item.contact}</td>
                                     <td>{item.date}</td>
+                                    <td className="text-red-700 cursor-pointer inline-block" onClick={()=>deleteUser(item._id)}><MdDelete/></td>
                                 </tr>
                             ))}
                         </tbody>

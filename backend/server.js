@@ -406,6 +406,34 @@ app.put('/updatepassword', async (req, res) => {
     }
 });
 
+app.delete("/deleteUser", async (req, res) => {
+    const { id } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ message: "ID is required" });
+    }
+
+    let objectId;
+    try {
+        objectId = new mongoose.Types.ObjectId(id); 
+    } catch (err) {
+        return res.status(400).json({ message: "Invalid ID format", error: err.message });
+    }
+
+    try {
+        const client = await newUser.findById(objectId); 
+        if (!client) {
+            return res.status(404).json({ message: "Client not found" });
+        }
+
+        await client.deleteOne();
+        res.status(200).json({ message: "Client deleted successfully" });
+    } catch (err) {
+        console.error("Error deleting user:", err);
+        res.status(500).json({ message: "Internal server error", error: err.message });
+    }
+});
+
 app.listen(5001, () => {
     console.log('Server running on http://localhost:5001')
 })
