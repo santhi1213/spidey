@@ -125,7 +125,6 @@ app.post("/producthandover", async (req, res) => {
         await newHandoverItems.save();
         res.status(200).json({ message: "Items added successfully" });
     } catch (err) {
-        console.error("Error saving handover items:", err);
         res.status(500).json({ message: "Internal server error" });
     }
 });
@@ -140,7 +139,6 @@ app.post("/returnproduct", async (req, res) => {
     } = req.body;
 
     try {
-        // Check if handover items exist for the same client on the same date
         const handoverItem = await handoverItems.findOne({ clientName, date });
 
         if (!handoverItem) {
@@ -151,7 +149,6 @@ app.post("/returnproduct", async (req, res) => {
                 });
         }
 
-        // Validate if the returned items are within the handed-over quantities
         if (
             parseInt(idlyBatter) > parseInt(handoverItem.idlyBatter) ||
             parseInt(dosaBatter) > parseInt(handoverItem.dosaBatter) ||
@@ -163,7 +160,6 @@ app.post("/returnproduct", async (req, res) => {
                 .json({ message: "Returned items exceed handed-over quantities" });
         }
 
-        // Save the return items
         const newReturnItems = new returnItems({
             clientName,
             idlyBatter,
@@ -405,7 +401,6 @@ app.put('/updatepassword', async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 });
-
 app.delete("/deleteUser", async (req, res) => {
     const { id } = req.body;
 

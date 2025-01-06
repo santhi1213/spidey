@@ -102,7 +102,7 @@ const ProductHandover = ({ isSidebarOpen }) => {
     useEffect(() => {
         AllUsers();
         AllItems();
-    }, [uploadItems])
+    }, [])
     const handleClientChange = (event) => {
         const value = event.target.value;
         setSelectedClient(value);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = ({ setIsLogin }) => {
   const [username, setUsername] = useState("");
@@ -85,6 +85,9 @@ const Login = ({ setIsLogin }) => {
           <button className="bg-green-700 text-white font-semibold hover:bg-green-600 p-2 rounded-md mt-4">
             Login
           </button>
+        </div>
+        <div className="text-end">
+          <Link to='/register'>Register</Link>
         </div>
       </form>
     </div>

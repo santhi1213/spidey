@@ -114,7 +114,7 @@ const ProductHandover = ({ isSidebarOpen }) => {
     useEffect(() => {
         AllItems();
         AllUsers();
-    }, [uploadItems])
+    }, [])
     useEffect(() => {
         setDisplayCategories(selectedClient && selectedClient !== "#");
     }, [selectedClient]);
