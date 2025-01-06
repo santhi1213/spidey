@@ -105,7 +105,7 @@ const Sidebar = ({ collapsed, toggleSidebar, setIsLogin }) => {
             </Link> */}
           </div> 
 
-          <div className="pl-4 mt-[95%]">
+          <div className="pl-4 mt-[85%]">
           <Link
               to="/"
               className={`flex items-center space-x-2 hover:bg-gray-700 p-2 w-[90%] rounded-md`}
