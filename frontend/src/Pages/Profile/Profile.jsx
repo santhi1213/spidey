@@ -36,7 +36,7 @@ const Profile = ({ isSidebarOpen }) => {
         }
 
         try {
-            const response = await fetch(`http://localhost:5001/updatepassword`, {
+            const response = await fetch(`https://spidey-api-mu.vercel.app/updatepassword`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

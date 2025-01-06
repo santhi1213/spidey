@@ -7,7 +7,11 @@ const jwt = require("jsonwebtoken");
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin:['https://spidey-ui.vercel.app'],
+    methods:['POST','PUT','GET','DELETE'],
+    credentials:true
+}));
 
 mongoose
     .connect("mongodb+srv://santhiraju32:h2BVjIw1gaWTExgD@batter-management-db.jlsj4.mongodb.net/?retryWrites=true&w=majority&appName=batter-management-db")
@@ -429,8 +433,9 @@ app.delete("/deleteUser", async (req, res) => {
     }
 });
 
-app.listen(5001, () => {
-    console.log('Server running on http://localhost:5001')
-})
+// app.listen(5001, () => {
+//     console.log('Server running on http://localhost:5001')
+// })
 
+module.exports = app;
 
