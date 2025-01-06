@@ -6,7 +6,7 @@ const Login = ({ setIsLogin }) => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const API_URL = 'https://spidey-api-mu.vercel.app'; 
+  const API_URL = 'http://localhost:5001'; 
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');

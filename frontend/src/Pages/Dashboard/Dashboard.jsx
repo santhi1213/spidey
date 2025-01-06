@@ -138,7 +138,7 @@ const Home = ({ isSidebarOpen }) => {
 
   const AllData = async () => {
     try {
-      const response = await fetch("https://spidey-api-mu.vercel.app/getRemainingItemsWithoutDate");
+      const response = await fetch("http://localhost:5001/getRemainingItemsWithoutDate");
       const data = await response.json();
       if (!response.ok) {
         alert(data.message || "Error fetching data");
@@ -171,7 +171,7 @@ const Home = ({ isSidebarOpen }) => {
 
   const AllUsers = async () => {
     try {
-      const response = await fetch("https://spidey-api-mu.vercel.app/users");
+      const response = await fetch("http://localhost:5001/users");
       if (!response.ok) {
         throw new Error("Failed to fetch users");
       }

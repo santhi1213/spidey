@@ -49,7 +49,7 @@ const ProductHandover = ({ isSidebarOpen }) => {
         }
         setIsSubmitting(true);
         try {
-            const response = await fetch("https://spidey-api-mu.vercel.app/returnproduct", {
+            const response = await fetch("http://localhost:5001/returnproduct", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
@@ -89,7 +89,7 @@ const ProductHandover = ({ isSidebarOpen }) => {
     };
     const AllUsers = async () => {
         try {
-            const response = await fetch('https://spidey-api-mu.vercel.app/users');
+            const response = await fetch('http://localhost:5001/users');
             if (!response) {
                 console.log(err.message)
             }
@@ -102,7 +102,7 @@ const ProductHandover = ({ isSidebarOpen }) => {
         }
     }
     const AllItems = async () => {
-        const response = await fetch("https://spidey-api-mu.vercel.app/getReturnItems");
+        const response = await fetch("http://localhost:5001/getReturnItems");
         if (!response) {
             alert('server error')
         }
