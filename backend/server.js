@@ -21,7 +21,7 @@ mongoose
 
 const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    username: { type: String, required: true, unique: true },  // Ensure username is unique
+    username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
 });
 const User = mongoose.model("User", UserSchema);
@@ -194,13 +194,15 @@ app.post("/adduser", async (req, res) => {
 });
 app.get("/users", async (req, res) => {
     try {
-        const users = await newUser.find();
+        const users = await newUser.find().limit(50);
         res.status(200).json(users);
     } catch (err) {
         console.error("Error fetching users:", err);
         res.status(500).json({ message: "Internal server error" });
     }
 });
+
+
 app.post("/getRemainingItems", async (req, res) => {
     const { date } = req.body;
 
