@@ -31,7 +31,7 @@ const ProductHandoverModal = ({ isOpen, onClose, data }) => {
     setSuccessMessage("");
 
     try {
-      const response = await fetch(`http://localhost:5001/updateproduct/${data._id}`, {
+      const response = await fetch(`https://spidey-frontend-glmm.onrender.com/${data._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
