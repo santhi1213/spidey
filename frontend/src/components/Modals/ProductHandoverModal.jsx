@@ -3,6 +3,8 @@ import { ImCross } from "react-icons/im";
 
 const ProductHandoverModal = ({ isOpen, onClose, data }) => {
   if (!isOpen) return null;
+  console.log(data);
+  
 
   const [formData, setFormData] = useState({
     clientName: data.clientName,
