@@ -8,7 +8,7 @@ const LeftItems = ({ isSidebarOpen }) => {
 
     const fetchLeftItems = async () => {
         try {
-            const response = await fetch("http://localhost:5001/getRemainingItems", {
+            const response = await fetch("https://spidey-pvig.onrender.com/getRemainingItems", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ date: date }),

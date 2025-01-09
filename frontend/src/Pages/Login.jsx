@@ -6,7 +6,7 @@ const Login = ({ setIsLogin }) => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const API_URL = 'http://localhost:5001'; 
+  const API_URL = 'https://spidey-pvig.onrender.com'; 
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');

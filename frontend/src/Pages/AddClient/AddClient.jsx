@@ -20,7 +20,7 @@ const AddClient = ({ isSidebarOpen }) => {
     };
     const AllUsers = async()=>{
         try{
-            const response = await fetch('http://localhost:5001/users');
+            const response = await fetch('https://spidey-pvig.onrender.com/users');
             if(!response){
                 console.log(err.message)
             }
@@ -45,7 +45,7 @@ const AddClient = ({ isSidebarOpen }) => {
         }
     
         try {
-            const response = await fetch("http://localhost:5001/adduser", {
+            const response = await fetch("https://spidey-pvig.onrender.com/adduser", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -73,7 +73,7 @@ const AddClient = ({ isSidebarOpen }) => {
     };
     const deleteUser = async (id) => {
         try {
-            const response = await fetch("http://localhost:5001/deleteUser", {
+            const response = await fetch("https://spidey-pvig.onrender.com/deleteUser", {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
