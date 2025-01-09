@@ -29,7 +29,7 @@ const ProductHandoverModal = ({ isOpen, onClose, data }) => {
     setLoading(true);
     setErrorMessage("");
     setSuccessMessage("");
-
+  
     try {
       const response = await fetch(`https://spidey-frontend-glmm.onrender.com/${data._id}`, {
         method: "PUT",
@@ -43,22 +43,35 @@ const ProductHandoverModal = ({ isOpen, onClose, data }) => {
           bobbaraBatter: formData.bobbaraBatter,
         }),
       });
-
+  
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to update the product details");
+        // Try parsing the error message
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Failed to update the product details");
+        } else {
+          throw new Error("Failed to update the product details");
+        }
       }
-
-      const responseData = await response.json();
-      setSuccessMessage(responseData.message);
-      alert(responseData.message)
-      onClose(); 
+  
+      const contentType = response.headers.get("content-type");
+      let responseData = {};
+  
+      if (contentType && contentType.includes("application/json")) {
+        responseData = await response.json();
+      }
+  
+      setSuccessMessage(responseData.message || "Item updated successfully");
+      alert(responseData.message || "Item updated successfully");
+      onClose();
     } catch (error) {
       setErrorMessage(error.message);
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <div
