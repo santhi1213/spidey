@@ -428,9 +428,9 @@ app.delete("/deleteUser", async (req, res) => {
     }
 });
 
-// app.listen(5001, () => {
-//     console.log('Server running on http://localhost:5001')
-// })
+app.listen(5001, () => {
+    console.log('Server running on http://localhost:5001')
+})
 
-module.exports = app;
+// module.exports = app;
 
