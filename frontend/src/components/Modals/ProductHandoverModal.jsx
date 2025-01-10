@@ -33,7 +33,7 @@ const ProductHandoverModal = ({ isOpen, onClose, data }) => {
     setSuccessMessage("");
   
     try {
-      const response = await fetch(`https://spidey-pvig.onrender.com/${data._id}`, {
+      const response = await fetch(`https://spidey-pvig.onrender.com/updateproduct/${data._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
