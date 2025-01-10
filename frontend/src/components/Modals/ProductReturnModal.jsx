@@ -32,7 +32,7 @@ const ProductReturnModal = ({ isOpen, onClose, data }) => {
     setSuccessMessage("");
 
     try {
-      const response = await fetch(`https://spidey-frontend-glmm.onrender.com/updatereturn/${data._id}`, {
+      const response = await fetch(`https://spidey-pvig.onrender.com/updatereturn/${data._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
