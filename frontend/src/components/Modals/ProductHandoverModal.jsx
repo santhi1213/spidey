@@ -33,7 +33,7 @@ const ProductHandoverModal = ({ isOpen, onClose, data }) => {
     setSuccessMessage("");
   
     try {
-      const response = await fetch(`https://spidey-frontend-glmm.onrender.com/${data._id}`, {
+      const response = await fetch(`https://spidey-pvig.onrender.com/updateproduct/${data._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +47,6 @@ const ProductHandoverModal = ({ isOpen, onClose, data }) => {
       });
   
       if (!response.ok) {
-        // Try parsing the error message
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.includes("application/json")) {
           const errorData = await response.json();
