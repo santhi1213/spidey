@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: process.env.PORT || 3000, // Use the PORT provided by Render or default to 3000
-    host: true, // Allows external access
+    // host: true, // Allows external access
   },
 })
