@@ -9,8 +9,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(cors({
-    origin: '*', // Replace with your frontend URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+    origin: '*', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
   }));
 
 mongoose
